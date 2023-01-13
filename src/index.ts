@@ -3,14 +3,14 @@ import 'reflect-metadata'
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone'
 import { relationResolvers } from "@generated/type-graphql";
-import { buildSchema } from 'type-graphql';
+import { buildSchema, NonEmptyArray } from 'type-graphql';
 import { context } from './context'
 import resolvers from './resolvers';
 
 const app = async () => {
 
   const schema = await buildSchema({
-    resolvers: [...resolvers, ...relationResolvers],
+    resolvers: [...resolvers, ...relationResolvers] as NonEmptyArray<Function>,
     validate: false,
   });
 
@@ -19,7 +19,7 @@ const app = async () => {
   });
 
   const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
+    listen: { port: 8000 },
     context
   });
 
