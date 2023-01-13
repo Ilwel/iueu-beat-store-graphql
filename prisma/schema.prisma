@@ -12,31 +12,39 @@ generator typegraphql {
 }
 
 model Music {
-  id     Int    @id @default(autoincrement())
-  name   String
-  raw    Bytes
-  bpm    Int
-  key    String
-  style  String
-  cart   Cart?  @relation(fields: [cartId], references: [id])
-  cartId Int?
+  id           Int    @id @default(autoincrement())
+  title        String
+  raw          String
+  cover        String
+  bpm          Int
+  key          String
+  style        String
+  carts        Cart[]
+  usersWhoLove User[]
 
   @@map("musics")
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  cart     Cart[]
+  id             Int     @id @default(autoincrement())
+  username       String  @unique
+  password       String
+  instagram      String?
+  youtubeLink    String?
+  spotifyLink    String?
+  favoriteMusics Music[]
+  carts          Cart[]
+  isAdmin        Boolean @default(false)
 
   @@map("users")
 }
 
 model Cart {
-  id     Int     @id @default(autoincrement())
-  userId Int
-  user   User    @relation(fields: [userId], references: [id])
-  musics Music[]
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  musics    Music[]
+  createdAt DateTime @default(now())
 
   @@map("carts")
 }
