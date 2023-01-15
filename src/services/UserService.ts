@@ -30,8 +30,10 @@ export default class UserService {
       id: user.id,
       username: user.username,
     }, secret, { expiresIn })
-
-    return token
-
+    const { password: pw, ...dataUser } = user
+    return {
+      token,
+      user: dataUser
+    }
   }
 }
